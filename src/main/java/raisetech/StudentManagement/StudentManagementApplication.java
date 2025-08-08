@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @SpringBootApplication
 @RestController
@@ -44,15 +45,16 @@ public class StudentManagementApplication {
 //    課題5用
     @GetMapping("/student")
     public String getStudent() {
-        List<String> member = new ArrayList<>();
+        List<String> member;
         String returnString = "";
         if (student == null || student.isEmpty()) {
             return "データが存在しません";
         } else {
-            for (String key : student.keySet()) {
-                String temp = key + ":" + student.get(key) + "歳";
-                member.add(temp);
-            }
+//            for (String key : student.keySet()) {
+//                String temp = key + ":" + student.get(key) + "歳";
+//                member.add(temp);
+//            }
+            member = student.keySet().stream().map(key -> key + ":" + student.get(key) + "歳").collect(Collectors.toList());
         }
         returnString = String.join("\n", member);
         return returnString;
@@ -75,13 +77,20 @@ public class StudentManagementApplication {
         } else {
             if(student.containsKey (originalName)){
                 Map<String, String> temp = new HashMap<>();
-                for(String key : student.keySet()) {
-                    if(key.equals(originalName)) {
+//                for(String key : student.keySet()) {
+//                    if(key.equals(originalName)) {
+//                        temp.put(newName, student.get(key));
+//                    } else {
+//                        temp.put(key, student.get(key));
+//                    }
+//                }
+                student.keySet().forEach(key -> {
+                    if (key.equals(originalName)) {
                         temp.put(newName, student.get(key));
                     } else {
                         temp.put(key, student.get(key));
                     }
-                }
+                });
                 student.clear();
                 student = temp;
             }

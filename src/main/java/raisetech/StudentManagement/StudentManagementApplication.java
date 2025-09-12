@@ -5,6 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 @RestController
 public class StudentManagementApplication {
@@ -20,6 +23,14 @@ public class StudentManagementApplication {
 	public String getStudent(@RequestParam("name") String name) {
         Student student = repository.searchByName(name);
 		return student.getName() + " " + student.getAge() + "歳";
+	}
+
+	// 課題7
+	@GetMapping("/studentList")
+	public List<Student> searchStudentList() {
+		List<Student> studentList = new ArrayList<>();
+		studentList = repository.searchStudentList();
+		return studentList;
 	}
 
 	@PostMapping("/student")

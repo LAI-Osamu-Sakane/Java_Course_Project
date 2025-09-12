@@ -2,11 +2,17 @@ package raisetech.StudentManagement;
 
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
+
 @Mapper
 public interface StudentRepository {
 
     @Select("SELECT * FROM student WHERE name = #{name}")
     Student searchByName(String name);
+
+    // 課題7
+    @Select("SELECT * FROM student")
+    List<Student> searchStudentList();
 
     @Insert("INSERT student values(#{name}, #{age})")
     void registerStudent(String name, int age);

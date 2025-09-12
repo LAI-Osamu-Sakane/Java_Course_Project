@@ -25,6 +25,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3（Long)
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.18.0'
 
+	// https://mvnrepository.com/artifact/com.mysql/mysql-connector-j（Long)
+	runtimeOnly group: 'com.mysql', name: 'mysql-connector-j', version: '9.4.0'
+
+	// https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter（Long)
+	implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '3.0.5'
+
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

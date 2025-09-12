@@ -1,100 +1,39 @@
 package raisetech.StudentManagement;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import org.springframework.web.bind.annotation.*;
 
 @SpringBootApplication
 @RestController
 public class StudentManagementApplication {
 
-	private String name = "Enami Kouji";
-	private String age ="37";
-
-//    課題5用（あえて初期化しない）
-    private Map<String, String> student;
+    @Autowired
+    private StudentRepository repository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(StudentManagementApplication.class, args);
 	}
 
-	@GetMapping("/studentInfo")
-	public String getStudentInfo() {
-		return name + " " + age + "歳";
+	@GetMapping("/student")
+	public String getStudent(@RequestParam("name") String name) {
+        Student student = repository.searchByName(name);
+		return student.getName() + " " + student.getAge() + "歳";
 	}
 
-	@PostMapping("/studentInfo")
-	public void setStudentInfo(String name, String age) {
-		this.name = name;
-		this.age = age;
+	@PostMapping("/student")
+	public void registerStudent(String name, int age) {
+		repository.registerStudent(name, age);
 	}
 
-	@PostMapping("/studentName")
-	public void updateStudentName(String name) {
-		this.name = name;
+	@PatchMapping("/student")
+	public void updateStudent(String name, int age) {
+		repository.updateStudent(name, age);
 	}
 
-//    課題5用
-    @GetMapping("/student")
-    public String getStudent() {
-        List<String> member;
-        String returnString = "";
-        if (student == null || student.isEmpty()) {
-            return "データが存在しません";
-        } else {
-//            for (String key : student.keySet()) {
-//                String temp = key + ":" + student.get(key) + "歳";
-//                member.add(temp);
-//            }
-            member = student.keySet().stream().map(key -> key + ":" + student.get(key) + "歳").collect(Collectors.toList());
-        }
-        returnString = String.join("\n", member);
-        return returnString;
+    @DeleteMapping("student")
+    public void deleteStudent(String name) {
+        repository.deleteStudent(name);
     }
-
-    @PostMapping("/student")
-    public void setStudent(String name, String age) {
-        // 登録をする際に、初期化しないとエラーになる
-        if (student == null) {
-            student = new HashMap<>();
-        }
-        student.put(name, age);
-    }
-
-    @PostMapping("/studentUpdate")
-    public void updateStudentName(String originalName, String newName) {
-        // 更新をする際に、初期化しないとエラーになる
-        if (student == null) {
-            student = new HashMap<>();
-        } else {
-            if(student.containsKey (originalName)){
-                Map<String, String> temp = new HashMap<>();
-//                for(String key : student.keySet()) {
-//                    if(key.equals(originalName)) {
-//                        temp.put(newName, student.get(key));
-//                    } else {
-//                        temp.put(key, student.get(key));
-//                    }
-//                }
-                student.keySet().forEach(key -> {
-                    if (key.equals(originalName)) {
-                        temp.put(newName, student.get(key));
-                    } else {
-                        temp.put(key, student.get(key));
-                    }
-                });
-                student.clear();
-                student = temp;
-            }
-        }
-    }
-
 }

@@ -5,7 +5,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
@@ -20,31 +19,9 @@ public class StudentManagementApplication {
 	}
 
 	@GetMapping("/student")
-	public String getStudent(@RequestParam("name") String name) {
-        Student student = repository.searchByName(name);
-		return student.getName() + " " + student.getAge() + "歳";
+	public List<Student> getStudentList() {
+		return repository.search();
 	}
 
-	// 課題7
-	@GetMapping("/studentList")
-	public List<Student> searchStudentList() {
-		List<Student> studentList = new ArrayList<>();
-		studentList = repository.searchStudentList();
-		return studentList;
-	}
 
-	@PostMapping("/student")
-	public void registerStudent(String name, int age) {
-		repository.registerStudent(name, age);
-	}
-
-	@PatchMapping("/student")
-	public void updateStudent(String name, int age) {
-		repository.updateStudent(name, age);
-	}
-
-    @DeleteMapping("student")
-    public void deleteStudent(String name) {
-        repository.deleteStudent(name);
-    }
 }

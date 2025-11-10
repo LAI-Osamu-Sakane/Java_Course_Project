@@ -1,6 +1,8 @@
-package raisetech.StudentManagement;
+package raisetech.StudentManagement.repository;
 
 import org.apache.ibatis.annotations.*;
+import raisetech.StudentManagement.data.Student;
+import raisetech.StudentManagement.data.StudentsCourses;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ public interface StudentRepository {
     List<Student> search();
 
     @Select("SELECT * FROM students_courses")
-    List<StudentsCourses> sarchStudentCourses();
+    List<StudentsCourses> sarchStudentsCourses();
 
 
 }
